@@ -1,0 +1,30 @@
+[
+  {
+    "name": "ABS",
+    "enCode": "ABS",
+    "tip": "获取绝对值",
+    "example": "ABS(-3) = 3",
+    "usage": "ABS(数字)。"
+  },
+  {
+    "name": "AVERAGE",
+    "enCode": "AVERAGE",
+    "tip": "求平均值",
+    "example": "AVERAGE(1,2,3) = 2",
+    "usage": "AVERAGE(数字1,数字2,...)。"
+  },
+  {
+    "name": "CEILING",
+    "enCode": "CEILING",
+    "tip": "增大到指定因数倍数",
+    "example": "CEILING(7,6)返回12，因为12比7大的同时，也是6的倍数中最接近7的数字。",
+    "usage": "CEILING(数字,因数)。"
+  },
+  {
+    "name": "COUNT",
+    "enCode": "COUNT",
+    "tip": "统计个数",
+    "example": "COUNT(1,2,3,4) = 4",
+    "usage": "COUNT(数字1,数字2,...)。"
+  }
+]

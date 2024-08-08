@@ -1,0 +1,30 @@
+[
+  {
+    "name": "CONCATENATE",
+    "enCode": "CONCATENATE",
+    "tip": "合并多个文本",
+    "example": "CONCATENATE(\"Hello\",\"World\") = \"HelloWorld\"",
+    "usage": "CONCATENATE(文本1,文本2,...)。"
+  },
+  {
+    "name": "SUM",
+    "enCode": "SUM",
+    "tip": "求和",
+    "example": "SUM(数学成绩,语文成绩,英语成绩,...) = 各科总成绩",
+    "usage": "SUM(数值1,数值2,...)。"
+  },
+  {
+    "name": "DATE",
+    "enCode": "DATE",
+    "tip": "返回特定日期",
+    "example": "DATE(2021,1,1)",
+    "usage": "DATE(year,month,day)。"
+  },
+  {
+    "name": "IF",
+    "enCode": "IF",
+    "tip": "条件判断",
+    "example": "IF(成绩>60,'及格','不及格')",
+    "usage": "IF(逻辑语句,真值,假值)。"
+  }
+]
