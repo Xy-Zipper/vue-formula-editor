@@ -1,5 +1,6 @@
 <template>
   <div class="vue-formula">
+    {{ loading }}
     <codemirror @ready="onCmReady" v-model="code" :options="options" />
     <div class="operator-container flex flex-1 overflow-hidden">
       <FieldVariable
@@ -32,13 +33,17 @@
   import 'codemirror/mode/javascript/javascript.js'
   import 'codemirror/addon/hint/show-hint.css'
   import 'codemirror/addon/hint/show-hint.js'
-//   import {codemirror}  from 'vue-codemirror'
+  import { codemirror } from 'vue-codemirror'
   import FormulaEditorCore from './core/index'
   import FieldVariable from './components/FieldVariable.vue'
-import FormulaList from './components/FormulaList.vue'
-  const {codemirror} = require('vue-codemirror')
+  import FormulaList from './components/FormulaList.vue'
   export default {
     name: 'vue-formula',
+    provide() {
+      return {
+        getEditorCore: () => this.editorCore,
+      }
+    },
     components: {
       codemirror,
       FieldVariable,
@@ -53,7 +58,6 @@ import FormulaList from './components/FormulaList.vue'
     data() {
       return {
         fieldList: [],
-        loading: true,
         editorCore: null,
         code: '',
         currentFormula: null,

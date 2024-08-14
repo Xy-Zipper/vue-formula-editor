@@ -1,5 +1,5 @@
 import formulaObj from '../formula'
-import * as FormulaFunc from '@formulajs/formulajs/lib/cjs/index.cjs'
+import * as FormulaFunc from '@formulajs/formulajs'
 
 export default class FormulaEditorCore {
   editor = null; // 编辑器实例
