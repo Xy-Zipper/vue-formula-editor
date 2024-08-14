@@ -6,7 +6,7 @@
       :props="defaultProps"
       node-key="enCode"
       @node-click="nodeClick">
-      <span class="flex flex-col" slot-scope="{ data }">
+      <span class="info-container" slot-scope="{ data }">
         <span>{{ data.name }}</span>
         <span v-if="data.tip" class="tip">
           {{ data.tip }}
@@ -17,6 +17,7 @@
 </template>
 
 <script>
+  import 'element-ui/lib/theme-chalk/index.css'
   import { Tree } from 'element-ui'
 
   export default {
@@ -50,12 +51,16 @@
     },
   }
 </script>
-<style lang="scss" scoped>
+<style lang="less" scoped>
   .formula-list {
-    padding: 10px;
+    padding: 0 10px;
     overflow: auto;
     height: 100%;
     border-right: 1px solid #d7d9dc;
+    .info-container {
+      display: flex;
+      flex-direction: column;
+    }
     ::v-deep .el-tree-node__content {
       height: 100%;
       margin-top: 6px;

@@ -1,22 +1,17 @@
 <template>
   <div class="vue-formula">
-    {{ loading }}
     <codemirror @ready="onCmReady" v-model="code" :options="options" />
-    <div class="operator-container flex flex-1 overflow-hidden">
+    <div class="operator-container">
       <FieldVariable
-        class="h-full w-[250px]"
+        class="field-variable"
         @fieldSelect="onFieldSelect"
         :fieldList="fieldList" />
-      <FormulaList class="h-full w-[220px]" @formulaClick="onFormulaClick" />
-      <div v-if="currentFormula" class="flex-1 flex flex-col p-2">
-        <div class="text-sm text-gray-500">{{ currentFormula.tip }}</div>
-        <div class="text-sm text-gray-500 my-4">
-          用法：{{ currentFormula.usage }}
-        </div>
+      <FormulaList class="formula-list" @formulaClick="onFormulaClick" />
+      <div v-if="currentFormula" class="formula-info">
+        <div class="info-text">{{ currentFormula.tip }}</div>
+        <div class="info-text">用法：{{ currentFormula.usage }}</div>
 
-        <div class="text-sm text-gray-500">
-          示例：{{ currentFormula.example }}
-        </div>
+        <div class="info-text">示例：{{ currentFormula.example }}</div>
       </div>
     </div>
   </div>
@@ -50,14 +45,13 @@
       FormulaList,
     },
     props: {
-      loading: {
-        type: Boolean,
-        default: false,
+      fieldList: {
+        type: Array,
+        default: () => [],
       },
     },
     data() {
       return {
-        fieldList: [],
         editorCore: null,
         code: '',
         currentFormula: null,
@@ -83,9 +77,87 @@
         this.editorCore = new FormulaEditorCore(codemirror)
         this.editorCore.registerListen()
       },
+
+      onFormulaClick(formula) {
+        this.currentFormula = formula
+        this.editorCore.insertText(`${formula.name}()`, 'formula')
+      },
+      onFieldSelect(field) {
+        this.editorCore.insertText(
+          {
+            ...field,
+            menuId: this.currentMenuId,
+          },
+          'field'
+        )
+      },
     },
     created() {},
     mounted() {},
   }
 </script>
-<style lang="scss" scoped></style>
+<style lang="less" scoped>
+  .vue-formula {
+    .operator-container {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+      .field-variable {
+        height: 100%;
+        width: 250px;
+      }
+      .formula-list {
+        height: 100%;
+        width: 220px;
+      }
+      .formula-info {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        padding: 6px;
+        .info-text {
+          font-size: 12px;
+          color: #6b7280;
+          margin: 6px 0;
+        }
+      }
+    }
+  }
+</style>
+
+<style>
+  .vue-formula {
+    border: 1px solid #d7d9dc;
+    height: fit-content;
+    margin-top: 10px;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    height: 500px;
+    .CodeMirror {
+      height: 200px;
+    }
+  }
+
+  .CodeMirror-hints {
+    z-index: 30000 !important;
+    background-color: #f0f0f0;
+    color: #333;
+    width: 130px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 4px;
+    max-height: 200px;
+    overflow-y: auto;
+  }
+  .cm-field {
+    background: #eaf2fd;
+    color: #2f7deb !important;
+    border-radius: 2px;
+    display: inline-block;
+    font-size: 14px;
+    margin: 0 2px;
+    padding: 3px 5px;
+  }
+</style>
