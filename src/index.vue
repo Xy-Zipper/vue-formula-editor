@@ -37,11 +37,6 @@
   import FormulaList from './components/FormulaList.vue'
   export default {
     name: 'vue-formula',
-    provide() {
-      return {
-        getEditorCore: () => this.editorCore,
-      }
-    },
     components: {
       codemirror,
       FieldVariable,
@@ -88,9 +83,6 @@
     },
     watch: {},
     methods: {
-      renderData() {
-        this.editorCore.renderData(this.formulaConf)
-      },
       reset() {
         this.currentFormula = null
         this.editorCore.reset()

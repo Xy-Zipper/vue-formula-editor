@@ -65,6 +65,7 @@
     },
     mounted() {
       this.list = formulaObj.map(ObjInstance => new ObjInstance())
+
       // 计算值 - 传入配置
       this.result = calculate({
         text: 'SUM(1,2,3,4,5,6,7,8,9,10)',
@@ -75,6 +76,7 @@
         const data = this.$refs.formulaEditor.getData()
         this.formulaConf = data
         this.dialogVisible = false
+
         this.watchData?.()
         // 自动监听form表单的值
         this.watchData = formulaWatcher(
