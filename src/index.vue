@@ -56,6 +56,10 @@
         type: Array,
         default: () => [],
       },
+      formulaConf: {
+        type: Object,
+        default: () => ({}),
+      },
     },
     data() {
       return {
@@ -84,6 +88,16 @@
     },
     watch: {},
     methods: {
+      renderData() {
+        this.editorCore.renderData(this.formulaConf)
+      },
+      reset() {
+        this.currentFormula = null
+        this.editorCore.reset()
+      },
+      getData() {
+        return this.editorCore.getData()
+      },
       onCmReady(codemirror) {
         this.editorCore = new FormulaEditorCore(
           codemirror,
@@ -91,6 +105,8 @@
           this.formulaList
         )
         this.editorCore.registerListen()
+
+        this.editorCore.renderData(this.formulaConf)
       },
 
       onFormulaClick(formula) {

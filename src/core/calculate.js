@@ -1,7 +1,7 @@
 import * as FormulaFunc from '@formulajs/formulajs'
 /**
  * 计算公式
- * @param {text: string, marks: Array, value: Object} params
+ * @param {{text: string, marks: Array, value: Object}} params
  * @returns
  */
 function calculate(params) {
@@ -52,23 +52,27 @@ function calculate(params) {
  * @param {Object} formData 计算公式所需的数据
  * @param {Object} formulaConf 计算公式配置
  * @param {Function} fn 回调函数
+ * @returns {Function} 取消监听函数
  */
 function formulaWatcher(vm, formData, formulaConf, fn) {
-  if (!formulaConf?.marks) return
+  const watchList = []
+  const { key, value } = formData
 
   const toCalculate = () => {
     const data = calculate({
-      value: formData,
+      value,
       marks: formulaConf.marks,
       text: formulaConf.text,
     })
-    if (data) fn(data)
+    fn(data)
   }
   formulaConf.marks.forEach(mark => {
-    const [key] = mark.enCode.split('.')
-    vm.$watch(`formData.${key}`, toCalculate)
+    const [preCode] = mark.enCode.split('.')
+    const watchItem = vm.$watch(`${key}.${preCode}`, toCalculate)
+    watchList.push(watchItem)
   })
   // 初始化计算
   toCalculate()
+  return () => watchList.forEach(watchItem => watchItem())
 }
 export { calculate, formulaWatcher }
