@@ -6,7 +6,10 @@
         class="field-variable"
         @fieldSelect="onFieldSelect"
         :fieldList="fieldList" />
-      <FormulaList class="formula-list" @formulaClick="onFormulaClick" />
+      <FormulaList
+        :nodes="nodes"
+        class="formula-list"
+        @formulaClick="onFormulaClick" />
       <div v-if="currentFormula" class="formula-info">
         <div class="info-text">{{ currentFormula.tip }}</div>
         <div class="info-text">用法：{{ currentFormula.usage }}</div>
@@ -49,6 +52,10 @@
         type: Array,
         default: () => [],
       },
+      formulaList: {
+        type: Array,
+        default: () => [],
+      },
     },
     data() {
       return {
@@ -70,11 +77,19 @@
         },
       }
     },
-    computed: {},
+    computed: {
+      nodes() {
+        return this.formulaList || []
+      },
+    },
     watch: {},
     methods: {
       onCmReady(codemirror) {
-        this.editorCore = new FormulaEditorCore(codemirror)
+        this.editorCore = new FormulaEditorCore(
+          codemirror,
+          '',
+          this.formulaList
+        )
         this.editorCore.registerListen()
       },
 

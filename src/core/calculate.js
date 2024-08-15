@@ -1,6 +1,4 @@
-import * as FormulaFunc from '@formulajs/formulajs/lib/cjs/index.cjs'
-import formulaObj from '../formula'
-
+import * as FormulaFunc from '@formulajs/formulajs'
 /**
  * 计算公式
  * @param {text: string, marks: Array, value: Object} params
@@ -13,45 +11,33 @@ function calculate(params) {
   try {
     let str = text
     let offset = 0 // 偏移量
-    marks
-      .sort((a, b) => a.from.ch - b.from.ch)
-      .forEach(mark => {
-        const { enCode, from, to } = mark
+    marks.sort((a, b) => a.from.ch - b.from.ch)
+    for (const mark of marks) {
+      const { enCode, from, to, uuid } = mark
 
-        let data = value[enCode]
-        // 子表情况
-        if (enCode.indexOf('.') > -1) {
-          const [key, subKey] = enCode.split('.')
-          if (value[key]) data = value[key].map(o => o[subKey])
-        }
-        if (data !== undefined) {
-          data = JSON.stringify(data)
-          // 替换字符串的指定部分
-          const startIndex = from.ch + offset
-          const endIndex = to.ch + offset
+      let data = value[enCode] || value[uuid]
+      // 子表情况
+      if (enCode.indexOf('.') > -1) {
+        const [key, subKey] = enCode.split('.')
+        if (value[key]) data = value[key].map(o => o[subKey])
+      }
+      if (data !== undefined) {
+        data = JSON.stringify(data)
+        // 替换字符串的指定部分
+        const startIndex = from.ch + offset
+        const endIndex = to.ch + offset
 
-          str = str.slice(0, startIndex) + data.toString() + str.slice(endIndex)
+        str = str.slice(0, startIndex) + data.toString() + str.slice(endIndex)
 
-          // 更新偏移量
-          offset += data.toString().length - (to.ch - from.ch)
-        } else {
-          throw new Error(`未找到${enCode}对应的值`)
-        }
-      })
-    // 创建局部作用域并附加公式函数
-    const localScope = {}
-
-    const formulaList = formulaObj
-      .map(ObjInstance => {
-        return new ObjInstance()
-      })
-      .flatMap(o => o.formula)
-    for (const item of formulaList) {
-      localScope[item.name] = FormulaFunc[item.name]
+        // 更新偏移量
+        offset += data.toString().length - (to.ch - from.ch)
+      } else {
+        return undefined
+      }
     }
     // 创建一个新的函数作用域来执行 eval
-    const result = new Function(...Object.keys(localScope), `return ${str};`)(
-      ...Object.values(localScope)
+    const result = new Function(...Object.keys(FormulaFunc), `return ${str};`)(
+      ...Object.values(FormulaFunc)
     )
     return result
   } catch (e) {

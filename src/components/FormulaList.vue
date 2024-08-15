@@ -3,7 +3,7 @@
     <Tree
       :data="nodes"
       :default-expanded-keys="['frequentlyUse']"
-      :props="defaultProps"
+      :props="props"
       node-key="enCode"
       @node-click="nodeClick">
       <span class="info-container" slot-scope="{ data }">
@@ -23,20 +23,21 @@
   export default {
     name: 'FormulaList',
     components: { Tree },
-    inject: ['getEditorCore'],
-    data() {
-      return {
-        editorCore: null,
-        defaultProps: {
+    props: {
+      nodes: {
+        type: Array,
+        default: () => [],
+      },
+      props: {
+        type: Object,
+        default: () => ({
           children: 'formula',
           label: 'name',
-        },
-      }
-    },
-    computed: {
-      nodes() {
-        return this.editorCore?.formulaObjList || []
+        }),
       },
+    },
+    data() {
+      return {}
     },
     watch: {},
     methods: {
@@ -46,9 +47,7 @@
       },
     },
     created() {},
-    mounted() {
-      this.editorCore = this.getEditorCore()
-    },
+    mounted() {},
   }
 </script>
 <style lang="less" scoped>
