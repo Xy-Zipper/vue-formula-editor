@@ -9,6 +9,8 @@
 ```bash
 $ npm i vue-formula-editor -S
 ```
+## example地址
+<a href="https://master--stalwart-pudding-602011.netlify.app">在线体验</a>
 
 <a href="https://github.com/Xy-Zipper/vue-formula-editor">demo & 源码</a>
 
