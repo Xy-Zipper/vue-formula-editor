@@ -5,22 +5,31 @@
 > ⚠️ 注意：目前仅支持 Vue2
 
 ## 安装
-
 ```bash
 $ npm i vue-formula-editor -S
 ```
 ## example地址
 <a href="https://vue-formula-editor.netlify.app">在线体验</a>
-
 <a href="https://github.com/Xy-Zipper/vue-formula-editor">demo & 源码</a>
 
-### Props 参数说明
+## 使用方式
+```javascript
+import { calculate, formulaWatcher, FormulaEditor } from 'vue-formula-editor'
+```
+> 主要导出三个对象
+- `calculate`计算结果函数
+- `formulaWatcher`自动监听表单变化计算结果
+- `FormulaEditor`组件
+
+
+### FormulaEditor组件  Props 参数说明
 
 | 参数        | 说明                  | 类型   | 可选值 | 默认值 |
 | ----------- | --------------------- | ------ | ------ | ------ |
-| fieldList   | 表单字段              | Array  | 必填   |        |
-| formulaList | 公式函数列表          | Array  | 必填   |        |
-| formulaConf | 公式编辑配置 / 回显值 | Object | 必填   |        |
+| fieldList   | 表单字段              | Array  | 必填   |     -  |
+| formulaList | 公式函数列表          | Array  | 必填   |    -   |
+| formulaConf | 公式编辑配置 / 回显值 | Object | 必填   |    -   |
+
 
 #### fieldList 数据格式
 
@@ -34,7 +43,7 @@ $ npm i vue-formula-editor -S
 ]
 ```
 
-#### formulaList 类型说明
+#### formulaList 数据格式
 
 ```javascript
 [
@@ -54,9 +63,9 @@ $ npm i vue-formula-editor -S
 ]
 ```
 
-#### formulaConf 类型说明
+#### formulaConf 数据格式
 
-> 其中 `marks` 为可选参数
+> 其中 `marks` 为可选参数，因为不一定有变量参与计算
 
 ```javascript
 {
@@ -89,7 +98,7 @@ $ npm i vue-formula-editor -S
 }
 ```
 
-### Methods 方法说明
+### FormulaEditor组件 Methods 方法说明
 
 | 方法名  | 说明             | 参数 |
 | ------- | ---------------- | ---- |
