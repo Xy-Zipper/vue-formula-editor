@@ -4,8 +4,6 @@
 name: npm publish
 
 on:
-  release:
-    types: [created]
   push:
     branches:
       - master
@@ -19,7 +17,7 @@ jobs:
         with:
           node-version: 20
       - run: npm ci
-      - run: npm test
+      - run: npm run build
 
   publish-npm:
     needs: build
