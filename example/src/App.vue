@@ -10,7 +10,7 @@
       </el-form-item>
     </el-form>
     <div>计算结果：{{ result }}</div>
-    <el-dialog title="配置公式" :visible.sync="dialogVisible" width="80%">
+    <el-dialog title="配置公式" :visible.sync="dialogVisible" width="800px">
       <FormulaEditor
         :formulaList="list"
         ref="formulaEditor"
