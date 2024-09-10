@@ -1,4 +1,5 @@
-import * as FormulaFunc from '@formulajs/formulajs'
+import functionCore from './functionCore'
+
 /**
  * 计算公式
  * @param {{text: string, marks: Array, value: Object}} params
@@ -35,11 +36,7 @@ function calculate(params) {
         return undefined
       }
     }
-    // 创建一个新的函数作用域来执行 eval
-    const result = new Function(...Object.keys(FormulaFunc), `return ${str};`)(
-      ...Object.values(FormulaFunc)
-    )
-    return result
+    return functionCore.executeFunction(str)
   } catch (e) {
     console.log(e)
     return undefined
