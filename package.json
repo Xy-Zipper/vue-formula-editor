@@ -4,8 +4,8 @@
   "version": "0.1.4",
   "homepage": "https://github.com/xy-zipper/vue-formula-editor",
   "description": "低代码公式编辑器，支持动态计算",
-  "main": "dist/bundle.umd.js",
-  "module": "dist/bundle.esm.js",
+  "main": "./src/index.js",
+  "module": "./src/index.js",
   "scripts": {
     "build": "rollup -c",
     "test": "echo \"Error: no test specified\" && exit 1"
