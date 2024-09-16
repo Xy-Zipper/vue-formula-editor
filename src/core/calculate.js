@@ -36,10 +36,13 @@ function calculate(params) {
         return undefined
       }
     }
-    return functionCore.executeFunction(str)
+    const result = functionCore.executeFunction(str)
+    return result
   } catch (e) {
-    console.log(e)
-    return undefined
+    return {
+      error: true,
+      message: e.message,
+    }
   }
 }
 

@@ -1,3 +1,6 @@
+import { generateRandomData } from '../utils'
+import { calculate } from './calculate'
+
 export default class FormulaEditorCore {
   editor = null // 编辑器实例
   formulaObjList = [] // 公式对象列表
@@ -32,6 +35,61 @@ export default class FormulaEditorCore {
         atomic: true,
       })
     })
+  }
+
+  functionRules = {
+    CONCATENATE: {
+      minArgs: 1,
+      maxArgs: Infinity,
+      argTypes: ['number', 'string'],
+      returnType: 'string',
+    },
+    SUM: {
+      minArgs: 1,
+      maxArgs: 1,
+      argTypes: ['number'],
+      returnType: 'number',
+    },
+
+    // 其他函数的规则...
+  }
+
+  // 校验公式
+  validateFormula(fieldList) {
+    const variable = fieldList.reduce((acc, cur) => {
+      acc[cur.enCode] = generateRandomData(cur.value)
+      return acc
+    }, {})
+    const result = calculate({ ...this.getData(), value: variable })
+    const calculateResult = result.toString().includes('Error: #VALUE!')
+    if (calculateResult) {
+      return { error: true, message: '公式计算错误，请检查公式' }
+    }
+    if (result.error) {
+      return result
+    }
+    return { error: false }
+  }
+
+  // 获取函数的返回类型
+  getFunctionReturnType(functionCall) {
+    const functionName = functionCall.match(/^([A-Z]+)\(/)[1]
+    return this.functionRules[functionName].returnType
+  }
+
+  // 简单的类型校验函数
+  isValidType(arg, expectedType) {
+    if (expectedType === 'number') {
+      return !isNaN(parseFloat(arg))
+    } else if (expectedType === 'string') {
+      return (
+        typeof arg === 'string' || (arg.startsWith('"') && arg.endsWith('"'))
+      )
+    } else if (expectedType === 'boolean') {
+      return arg === 'true' || arg === 'false'
+    } else {
+      return true // 其他类型暂时忽略
+    }
   }
 
   // 注册监听器

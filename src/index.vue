@@ -1,6 +1,10 @@
 <template>
   <div class="vue-formula">
     <codemirror @ready="onCmReady" v-model="code" :options="options" />
+
+    <div class="formula-info-container" :data-error="`${validInfo != ''}`">
+      <span v-if="validInfo">公式错误：{{ validInfo }}</span>
+    </div>
     <div class="operator-container">
       <FieldVariable
         class="field-variable"
@@ -61,6 +65,7 @@
         editorCore: null,
         code: '',
         currentFormula: null,
+        validInfo: '',
         options: {
           autofocus: true,
           line: true,
@@ -81,7 +86,19 @@
         return this.formulaList || []
       },
     },
-    watch: {},
+    watch: {
+      code(val) {
+        if (!val) {
+          this.validInfo = ''
+          return
+        }
+        const { error, message } = this.editorCore.validateFormula(
+          this.fieldList
+        )
+
+        this.validInfo = error ? message : ''
+      },
+    },
     methods: {
       reset() {
         this.currentFormula = null
@@ -121,6 +138,17 @@
 </script>
 <style lang="less" scoped>
   .vue-formula {
+    .formula-info-container {
+      padding: 0 6px;
+      background-color: #faeeee;
+      color: #8d3030;
+      display: flex;
+      height: 40px;
+      align-items: center;
+      &[data-error='false'] {
+        background-color: #f7f7f7;
+      }
+    }
     .operator-container {
       display: flex;
       flex: 1;
@@ -133,6 +161,7 @@
         height: 100%;
         width: 220px;
       }
+
       .formula-info {
         flex: 1;
         display: flex;
@@ -173,6 +202,9 @@
     border-radius: 4px;
     max-height: 200px;
     overflow-y: auto;
+  }
+  .cm-string {
+    color: #f56c6c !important;
   }
   .cm-field {
     background: #eaf2fd;
