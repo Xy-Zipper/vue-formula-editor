@@ -39,9 +39,21 @@ function calculate(params) {
     const result = functionCore.executeFunction(str)
     return result
   } catch (e) {
+    const errorTypes = {
+      TypeError: () => '类型错误',
+      RangeError: () => '范围错误',
+      SyntaxError: () => '语法错误',
+      ReferenceError: () => {
+        const regex = /^(\w+)\s+is\s+not\s+defined$/
+        const match = e.message.match(regex)
+        return match ? `${match[1]} 未定义` : '未定义的变量'
+      },
+    }
+    const errorType = errorTypes[e.constructor.name]
+    const errorMessage = errorType?.() || `其他错误: ${e.message}`
     return {
       error: true,
-      message: e.message,
+      message: errorMessage,
     }
   }
 }
