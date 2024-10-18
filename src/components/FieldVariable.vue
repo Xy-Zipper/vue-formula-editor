@@ -1,9 +1,17 @@
 <template>
   <div class="field-variable">
+    <div class="field-search">
+      <el-input
+        placeholder="搜索变量"
+        prefix-icon="el-icon-search"
+        v-model="searchVariable"
+        clearable
+         />
+    </div>
     <div
       class="field-item"
       @click="$emit('fieldSelect', item)"
-      v-for="item in fieldList"
+      v-for="item in filterFieldList"
       :key="item.enCode">
       <span>{{ item.fullName }}</span>
       <span :field-type="item.value" class="text-tag">
@@ -14,6 +22,7 @@
 </template>
 
 <script>
+
   export default {
     name: 'FieldVariable',
     props: {
@@ -31,13 +40,23 @@
       }
       return {
         type,
+        // 搜索值
+        searchVariable:'',
+        // 过滤后的变量
+        filterFieldList: [],
       }
     },
     computed: {},
-    watch: {},
+    watch: {
+      searchVariable(val,old) {
+        this.filterFieldList = this.fieldList.filter(({fullName}) => fullName.includes(val))
+      },
+    },
     methods: {},
     async created() {},
-    mounted() {},
+    mounted() {
+      this.filterFieldList = this.fieldList
+    },
   }
 </script>
 <style lang="less" scoped>
